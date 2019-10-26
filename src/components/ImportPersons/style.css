@@ -1,0 +1,17 @@
+.csv-preview-table {
+    padding: 30px 0px 30px 0px;
+}
+
+.csv-preview-table table {
+    width: 100%;
+    border: 1px solid rgb(49, 48, 48)
+}
+
+.csv-preview-table tr:nth-child(even) {
+    background: #CCC
+}
+
+.csv-upload-panel {
+    width: 900px;
+    margin: 0 auto;
+}

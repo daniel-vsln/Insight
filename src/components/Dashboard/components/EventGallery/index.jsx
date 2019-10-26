@@ -10,8 +10,8 @@ export default (props) => {
 }
 
 function renderEvents(events) {
-    return events.map(event => {
-        return <div className="event-item">{event.content}</div>
+    return events.map((event, index) => {
+        return <div key={index} className="event-item">{event.content}</div>
     });
 }
 

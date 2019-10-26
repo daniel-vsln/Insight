@@ -3,7 +3,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import Dashboard from './Dashboard';
 import AddPerson from './AddPerson';
-import Import from './Import';
+import ImportPersons from './ImportPersons';
 
 export default () => (
     <Tabs>
@@ -19,7 +19,7 @@ export default () => (
         <AddPerson />
       </TabPanel>
       <TabPanel>
-        <Import />
+        <ImportPersons />
       </TabPanel>
     </Tabs>
   );
