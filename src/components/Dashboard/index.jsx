@@ -2,6 +2,8 @@ import React from 'react';
 import ReactTags from 'react-tag-autocomplete'
 import './style.css';
 import eventStore from '../../services/eventStore';
+import EventGallery from './components/EventGallery';
+import PersonsPanel from './components/PersonsPanel';
 
 export default class Dashboard extends React.Component {
     constructor(props) {
@@ -9,25 +11,22 @@ export default class Dashboard extends React.Component {
 
         this.state = {
             tags: [],
-            suggestions: [
-            { id: 3, name: "Bananas" },
-            { id: 4, name: "Mangos" },
-            { id: 5, name: "Lemons" },
-            { id: 6, name: "Apricots" }]
+            suggestions: [],
+            events: [],
         }
     }
 
     componentDidMount() {
         eventStore.getAllPersons().then(persons => {
             const tags = persons
-                .slice(0, 10)
+                .slice(0, 5)
                 .map(value => ({
                     id: value.personId,
                     name: `${value.firstName} ${value.lastName} (${value.company})`
                 }));
 
             const suggestions = persons
-                .slice(10)
+                .slice(5)
                 .map(value => ({
                     id: value.personId,
                     name: `${value.firstName} ${value.lastName} (${value.company})`
@@ -35,26 +34,48 @@ export default class Dashboard extends React.Component {
 
             this.setState({ tags, suggestions });
         });
+        eventStore.getLatestEvents(10).then(events => {
+            this.setState({ events });
+        });
     }
 
-    handleDelete(i) {
-        const tags = this.state.tags.slice(0)
-        tags.splice(i, 1)
-        this.setState({ tags })
+    // TODO refactoring
+    handleDelete = (i) => {
+        const tags = this.state.tags.slice(0);
+        const suggestions = this.state.suggestions.slice(0);
+
+        suggestions.push(tags[i]);
+        tags.splice(i, 1);
+
+        this.setState({ tags, suggestions });
     }
 
-    handleAddition(tag) {
+    // TODO refactoring
+    handleAddition = (tag) => {
         const tags = [].concat(this.state.tags, tag)
-        this.setState({ tags })
+        const suggestions = this.state.suggestions.slice(0);
+        const suggestionIndex = suggestions.findIndex(s => s.id === tag.id);
+
+        suggestions.splice(suggestionIndex, 1);
+        this.setState({ tags, suggestions });
     }
 
     render() {
+        const {
+            tags,
+            suggestions,
+            events
+        } = this.state;
         return (
-            <ReactTags
-                tags={this.state.tags}
-                suggestions={this.state.suggestions}
-                handleDelete={this.handleDelete.bind(this)}
-                handleAddition={this.handleAddition.bind(this)} />
-        )
+            <div>
+                <PersonsPanel
+                    tags={tags}
+                    suggestions={suggestions}
+                    handleDelete={this.handleDelete}
+                    handleAddition={this.handleAddition}
+                />
+                <EventGallery events={events} />
+            </div>
+        );
     }
 }

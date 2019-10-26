@@ -1,15 +1,21 @@
 import axios from 'axios';
-import mock from './mock'
+import personsMock from './mocks/personsMock';
+import eventsMock from './mocks/eventsMock';
 
 async function getAllPersons() {
-    return await mock.getAllPersons();
+    return await personsMock.getAllPersons();
 }
 
 async function getPerson(personId) {
-    return await mock.getPerson(personId);
+    return await personsMock.getPerson(personId);
+}
+
+async function getLatestEvents(top, skip = 0) {
+    return await eventsMock.getLatestEvents(top, skip);
 }
 
 export default {
     getAllPersons: getAllPersons,
-    getPerson: getPerson
+    getPerson: getPerson,
+    getLatestEvents: getLatestEvents
 }
