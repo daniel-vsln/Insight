@@ -18,7 +18,7 @@ export default ({persons, events, loading, onLoadMore}) => {
 
 function renderEvents(events, persons) {
     return events.map(event => {
-        const person = persons.find(p => p.personId === event.personId);
+        const person = persons.find(p => p.id === event.personId);
         const meta = event.meta
             ? '<div>Meta:</div>' + Object.keys(event.meta).map(key => `<div>${key}: ${event.meta[key]}</div>`).join('')
             : '';
