@@ -58,16 +58,8 @@ export default class ImportPersons extends React.Component {
                 firstName: person[0],
                 lastName: person[1],
                 company: person[2],
-                accounts: [
-                    {
-                        accountId: person[3],
-                        source: 'twitter'
-                    },
-                    {
-                        accountId: person[4],
-                        source: 'crunch'
-                    }
-                ]
+                twitterId: person[3],
+                crunchId: person[4],
             };
         });
 
