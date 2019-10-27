@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactTags from 'react-tag-autocomplete'
 import './style.css';
@@ -9,5 +8,6 @@ export default (props) => {
         suggestions={props.suggestions}
         handleDelete={props.handleDelete}
         handleAddition={props.handleAddition}
-        placeholder="Add new Person" />;
+        minQueryLength={1}
+        placeholder="Select Person" />;
 }

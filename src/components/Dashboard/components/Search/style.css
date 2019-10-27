@@ -1,0 +1,24 @@
+.search-container {
+    padding-top: 10px
+}
+
+.search-container .search-input {
+    width: 40%;
+    box-sizing: border-box;
+    margin: 0 6px 6px 0;
+    padding: 6px 8px;
+    border: 1px solid #D1D1D1;
+    border-radius: 2px;
+    font-size: 16px;
+}
+
+.search-container .search-button {
+    width: 150px;
+    box-sizing: border-box;
+    margin: 0 6px 6px 0;
+    padding: 6px 8px;
+    border: 1px solid #D1D1D1;
+    border-radius: 2px;
+    background: #F1F1F1;
+    font-size: 16px;
+}

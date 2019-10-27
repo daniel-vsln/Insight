@@ -35,7 +35,16 @@ export default class ImportPersons extends React.Component {
             </tr>;
         });
 
-        return <table>{rows}</table>;
+        return (
+          <table>
+              <thead>
+              <tr>
+                  <th>First Name</th><th>Last Name</th><th>Company</th><th>Twitter ID</th><th>Crunch ID</th>
+              </tr>
+              </thead>
+              <tbody>{rows}</tbody>
+          </table>
+        );
     }
 
     hasData = () => {
@@ -45,24 +54,26 @@ export default class ImportPersons extends React.Component {
     // TODO add columns selection feature. Now it depends on order
     uploadData = () => {
         const persons = this.state.data.map(person => {
-            const account = person[3].split('=');
             return {
                 firstName: person[0],
                 lastName: person[1],
                 company: person[2],
                 accounts: [
                     {
-                        accountId: account[1],
-                        source: account[0]
+                        accountId: person[3],
+                        source: 'twitter'
+                    },
+                    {
+                        accountId: person[4],
+                        source: 'crunch'
                     }
                 ]
             };
         });
 
-        const setState = this.setState;
         this.eventStore.addPersons(persons)
-            .catch(response => { setState({ status: 'error' }) })
-            .then(response => { setState({ status: 'done' }) });
+            .catch(response => { this.setState({ status: 'error' }) })
+            .then(response => { this.setState({ status: 'done' }) });
 
     }
 
@@ -80,6 +91,10 @@ export default class ImportPersons extends React.Component {
         } = this.state;
         return (
             <div className="csv-upload-panel">
+                <div className='csv-notify'>
+                    <p>CSV structure:</p>
+                    <span>:FirstName | :LastName | :Company | :TwitterId | :CrunchId</span>
+                </div>
                 <div>
                     <input type="file" id="personsCsv" accept=".csv" />
                 </div>
@@ -90,9 +105,13 @@ export default class ImportPersons extends React.Component {
                 </div>
                 <div>
                     {
-                        status !== 'initial' ? this.renderStatusMessage() : <button
+                        status !== 'initial' ? this.renderStatusMessage() : (
+                          <button
+                            className='csv-upload-button'
                             disabled={!this.hasData()}
-                            onClick={this.uploadData}>Upload to Server</button>
+                            onClick={this.uploadData}
+                          >Upload to Server</button>
+                        )
                     }
                 </div>
             </div>
