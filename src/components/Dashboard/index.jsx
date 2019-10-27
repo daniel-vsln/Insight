@@ -1,13 +1,14 @@
 import React from 'react';
-import ReactTags from 'react-tag-autocomplete'
 import './style.css';
-import eventStore from '../../services/eventStore';
+import eventStoreService from '../../services/eventStore';
 import EventGallery from './components/EventGallery';
 import PersonsPanel from './components/PersonsPanel';
 
 export default class Dashboard extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
+
+        this.eventStore = new eventStoreService();
 
         this.state = {
             tags: [],
@@ -17,16 +18,16 @@ export default class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-        eventStore.getAllPersons().then(persons => {
+        this.eventStore.getAllPersons().then(persons => {
             const tags = persons
-                .slice(0, 5)
+                .slice(0, 10)
                 .map(value => ({
                     id: value.personId,
                     name: `${value.firstName} ${value.lastName} (${value.company})`
                 }));
 
             const suggestions = persons
-                .slice(5)
+                .slice(10)
                 .map(value => ({
                     id: value.personId,
                     name: `${value.firstName} ${value.lastName} (${value.company})`
@@ -34,7 +35,7 @@ export default class Dashboard extends React.Component {
 
             this.setState({ tags, suggestions });
         });
-        eventStore.getLatestEvents(10).then(events => {
+        this.eventStore.getLatestEvents(10).then(events => {
             this.setState({ events });
         });
     }
@@ -60,6 +61,7 @@ export default class Dashboard extends React.Component {
         this.setState({ tags, suggestions });
     }
 
+    // TODO add error handling for upload
     render() {
         const {
             tags,
